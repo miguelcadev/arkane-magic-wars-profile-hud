@@ -1,0 +1,109 @@
+/* Cores principais: fundo roxo escuro, botões roxos e detalhes vermelhos. */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    color: #f5eafa;
+    background: radial-gradient(circle at top, #442052, #170e23 700px);
+    font-family: Arial, sans-serif;
+    line-height: 1.5;
+}
+
+/* Limita a largura e centraliza todo o conteúdo. */
+main { max-width: 1050px; margin: auto; padding: 24px 18px; }
+header { text-align: center; margin: 14px 0 30px; }
+h1, h2, h3 { font-family: Georgia, serif; }
+h1 { margin: 8px 0; font-size: 32px; }
+h2 { margin: 0 0 18px; font-size: 23px; }
+h3 { margin: 0 0 8px; font-size: 21px; overflow-wrap: anywhere; }
+p { color: #d0bfdc; margin: 8px 0; }
+
+.painel {
+    margin-bottom: 22px;
+    padding: 24px;
+    background: #251533;
+    border: 1px solid #654279;
+    border-top: 3px solid #b34c70;
+    border-radius: 12px;
+}
+
+label { display: block; font-size: 14px; }
+input {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+    padding: 11px;
+    color: #fff;
+    background: #170e23;
+    border: 1px solid #79558b;
+    border-radius: 6px;
+    font: inherit;
+    font-size: 16px;
+    color-scheme: dark;
+}
+input::placeholder { color: #aa96ba; }
+input:focus-visible, button:focus-visible, a:focus-visible {
+    outline: 3px solid #e7b5ff;
+    outline-offset: 3px;
+}
+
+/* Links e botões têm a mesma aparência. */
+.acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+button, .botao {
+    display: inline-block;
+    padding: 10px 17px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: #fff;
+    background: #7840ab;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    text-decoration: none;
+}
+button:hover, .botao:hover { filter: brightness(1.2); }
+.secundario { background: #382246; border-color: #79558b; }
+.vermelho { background: #9c334c; }
+.personagem { padding: 20px 0; border-top: 1px solid #503060; }
+.personagem:last-child { padding-bottom: 0; }
+.contagem { color: #e9a8b7; font: 16px Arial, sans-serif; }
+.mensagem { padding: 12px; margin-bottom: 20px; background: #4a2d60; border-radius: 6px; color: #fff; }
+
+/* Reduz os espaços em celulares pequenos. */
+@media (max-width: 480px) {
+    .painel { padding: 18px; }
+    h1 { font-size: 27px; }
+}
+
+/* As posições em porcentagem acompanham a imagem quando ela muda de tamanho. */
+.ajuda { margin: 18px 0 12px; font-size: 14px; }
+.ficha-imagem { position: relative; container-type: inline-size; background: white; color: black; border-radius: 6px; }
+.ficha-imagem img { display: block; width: 100%; height: auto; border-radius: 6px; }
+.ficha-imagem .atributo {
+    position: absolute;
+    width: 14%;
+    height: 18%;
+    margin: 0;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    color: #351349;
+    color-scheme: light;
+    font: bold clamp(12px, 3.2cqw, 34px) Arial, sans-serif;
+    text-align: center;
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+.atributo::-webkit-inner-spin-button, .atributo::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.ficha-imagem .atributo:focus-visible { outline: 2px solid #7840ab; outline-offset: 0; background: #f6edff; }
+.vida_atual { left: 10%; top: 24.5%; }
+.vida_maxima { left: 30.1%; top: 24.5%; }
+.recurso_atual { left: 55.8%; top: 25%; }
+.recurso_maximo { left: 77.5%; top: 25%; }
+.movimento { left: 12.5%; top: 68.5%; }
+.regeneracao { left: 43.2%; top: 68.5%; }
+.resistencia { left: 73.8%; top: 68.5%; }
+.legenda-vida { position: absolute; top: 18%; width: 14%; text-align: center; font: bold clamp(8px, 1.8cqw, 18px) Georgia, serif; }
+.legenda-vida.atual { left: 10%; }
+.legenda-vida.maxima { left: 30.1%; }

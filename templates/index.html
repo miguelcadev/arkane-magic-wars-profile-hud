@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grimório de personagens</title>
+    <link rel="stylesheet" href="/static/style.css?v=2">
+</head>
+<body>
+    <main>
+        <header>
+            <h1>Grimório de personagens</h1>
+            <p>Suas fichas, suas histórias.</p>
+        </header>
+
+        {% if mensagem %}
+            <p class="mensagem" role="status">{{ mensagem }}</p>
+        {% endif %}
+
+        <!-- O mesmo formulário cria uma ficha ou edita uma ficha existente. -->
+        <section class="painel" id="formulario">
+            <h2>{{ 'Editar personagem' if ficha else 'Novo personagem' }}</h2>
+            <form action="/salvar" method="post">
+                <!-- id=0 significa que estamos criando um personagem. -->
+                <input type="hidden" name="id" value="{{ ficha.get('id', 0) }}">
+                <label>Nome do personagem
+                    <input name="nome" value="{{ ficha.get('nome', '') }}"
+                           placeholder="Ex.: Luna" maxlength="100" pattern=".*\S.*" required>
+                </label>
+
+                <p class="ajuda" id="ajuda-ficha">Clique nos números da imagem para alterar os atributos. Depois, salve a ficha.</p>
+                <!-- A imagem fica ao fundo. O CSS posiciona cada input sobre sua caixa. -->
+                <div class="ficha-imagem">
+                    <img src="/static/ficha.png" alt="" width="1491" height="1055">
+                    <span class="legenda-vida atual" aria-hidden="true"></span>
+                    <span class="legenda-vida maxima" aria-hidden="true"></span>
+                    <input class="atributo vida_atual" aria-label="Vida atual" aria-describedby="ajuda-ficha"
+                           type="number" name="vida_atual" value="{{ ficha.get('vida_atual', 0) }}" min="0" max="999999" step="1" required>
+                    <input class="atributo vida_maxima" aria-label="Vida máxima" aria-describedby="ajuda-ficha"
+                           type="number" name="vida_maxima" value="{{ ficha.get('vida_maxima', 0) }}" min="0" max="999999" step="1" required>
+                    <input class="atributo recurso_atual" aria-label="Recurso atual" aria-describedby="ajuda-ficha"
+                           type="number" name="recurso_atual" value="{{ ficha.get('recurso_atual', 0) }}" min="0" max="999999" step="1" required>
+                    <input class="atributo recurso_maximo" aria-label="Recurso máximo" aria-describedby="ajuda-ficha"
+                           type="number" name="recurso_maximo" value="{{ ficha.get('recurso_maximo', 0) }}" min="0" max="999999" step="1" required>
+                    <input class="atributo movimento" aria-label="Movimento (MOV)" aria-describedby="ajuda-ficha"
+                           type="number" name="movimento" value="{{ ficha.get('movimento', 0) }}" min="0" max="999999" step="1" required>
+                    <input class="atributo regeneracao" aria-label="Regeneração por turno" aria-describedby="ajuda-ficha"
+                           type="number" name="regeneracao" value="{{ ficha.get('regeneracao', 0) }}" min="0" max="999999" step="1" required>
+                    <input class="atributo resistencia" aria-label="Resistência (RES)" aria-describedby="ajuda-ficha"
+                           type="number" name="resistencia" value="{{ ficha.get('resistencia', 0) }}" min="0" max="999999" step="1" required>
+                </div>
+
+                <div class="acoes">
+                    <button type="submit">{{ 'Salvar alterações' if ficha else 'Salvar personagem' }}</button>
+                    {% if ficha %}<a href="/" class="botao secundario">Cancelar edição</a>{% endif %}
+                </div>
+            </form>
+        </section>
+
+        <!-- O for repete o cartão para cada personagem encontrado no SQLite. -->
+        <section class="painel" aria-labelledby="titulo-fichas">
+            <h2 id="titulo-fichas">Fichas salvas <span class="contagem">{{ personagens | length }}</span></h2>
+            {% for personagem in personagens %}
+                <article class="personagem">
+                    <h3>{{ personagem.nome }}</h3>
+                    <p>Vida: {{ personagem.vida_atual }}/{{ personagem.vida_maxima }} · Recurso: {{ personagem.recurso_atual }}/{{ personagem.recurso_maximo }}</p>
+                    <p>MOV: {{ personagem.movimento }} · Regeneração: {{ personagem.regeneracao }} · RES: {{ personagem.resistencia }}</p>
+                    <div class="acoes">
+                        <a class="botao secundario" href="/?editar={{ personagem.id }}#formulario">Ver e editar ficha</a>
+                        <form action="/excluir/{{ personagem.id }}" method="post"
+                              onsubmit="return confirm('Excluir este personagem?');">
+                            <button class="vermelho" type="submit">Excluir</button>
+                        </form>
+                    </div>
+                </article>
+            {% else %}
+                <p>Nenhum personagem salvo. Crie sua primeira ficha acima.</p>
+            {% endfor %}
+        </section>
+    </main>
+</body>
+</html>
